@@ -1,7 +1,7 @@
 //think this through
-    ill have to send {question and options} from admin to /poll
+    ill have to 
     
-    later ill have to handle votingcount through websockets 
+    later ill have to handle votingcount through websockets (socket.io) 
 
 
 // thoughts

@@ -4,45 +4,48 @@ import Dashboard from "@/components/dashboard";
 import { useRouter } from "next/router";
 
 
+function decodeData(data){
+    const decodedData = decodeURIComponent(data);
+    const jsonData = JSON.parse(atob(decodedData));
+    return jsonData;
+}
+
 function Poll() {
     const router = useRouter();
-
-    console.log(router);
+    const {data} = router.query;
 
     const defData = {
-        'question': 'Your favourite color?',
-        'options': ['Red', 'Green', 'Blue'],
+        'question': 'Question?',
+        'options': ['A', 'B', 'C', 'D'],
     };
 
     const [pollData, setPollData] = useState(defData);
     const [votes, setVotes] = useState({
-        'Red':0,
-        'Green':0,
-        'Blue':0
+        'A':0,
+        'B':0,
+        'C':0,
+        'D':0
     });
 
     useEffect(() => {
-        console.log(router);
-        if (router.isReady) {
-            const data = router.query.slug;
-            if (data) {
-                try {
-                    // Ensure slug data is base64 encoded before decoding it
-                    const decodedData = JSON.parse(atob(data)); 
-                    setPollData(decodedData);
+        // connect to ws server
 
-                    const initialVotes = decodedData.options.reduce((acc, option) => {
-                        acc[option] = 0;
-                        return acc;
-                    }, {});
+        if (data) {
+            try {
+                const decodedData = decodeData(data); 
+                setPollData(decodedData);
 
-                    setVotes(initialVotes);
-                } catch (error) {
-                    console.error("Failed to decode or parse data: ", error);
-                }
+                const initialVotes = decodedData.options.reduce((acc, option) => {
+                    acc[option] = 0;
+                    return acc;
+                }, {});
+                setVotes(initialVotes);
+            
+            } catch (error) {
+                console.error("Failed to decode or parse data: ", error);
             }
         }
-    }, [router.isReady, router.query.slug]);
+    }, [data]);
 
 
     // handleVote will be done at server side later
@@ -52,6 +55,7 @@ function Poll() {
             [selectedOption]: prevVotes[selectedOption] + 1,
         }));
     };
+
 
     return (
         <div>
@@ -64,6 +68,7 @@ function Poll() {
             <Dashboard votes={votes} />
         </div>
     );
+
 }
 
 export default Poll;
