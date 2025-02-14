@@ -1,57 +1,57 @@
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import Dashboard from "@/components/dashboard";
+import PollForm from "@/components/pollForm";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-function encodeData(data){
-    const encodedData = btoa(JSON.stringify(data));
-    const safeEncodedData = encodeURIComponent(encodedData);
+function encodeData(data) {
+  const encodedData = btoa(JSON.stringify(data));
+  const safeEncodedData = encodeURIComponent(encodedData);
 
-    return safeEncodedData;
+  return safeEncodedData;
 }
 
-
 const Admin: React.FC = () => {
+  const router = useRouter();
 
-    const router = useRouter();
+  const defData = {
+    question: "Question?",
+    options: ["A", "B", "C", "D"],
+  };
 
-    // const link = '';
-    const [link, setLink] = useState('');
+  const [pollData, setPollData] = useState(defData);
 
+  // const link = '';
+  const [link, setLink] = useState("");
 
-    // at this point we'll have to start socket server
-    const handlePoll = () => {
-        const pollData = {
-            question: 'Your favorite color?',
-            options: ['Red', 'Blue', 'Green'],
-          };
+  // at this point we'll have to start socket server
+  useEffect(() => {
+    const encodedData = encodeData(pollData);
+    setLink(`http://localhost:3000/poll/${encodedData}`); // some link to poll
+  }, [pollData]);
 
-        const encodedData = encodeData(pollData);
-        //   const encodedData = 'abc';
+  const handleClick = () => {
+      router.push('/exp/123');
 
-        setLink(`http://localhost:3000/poll/${encodedData}`); // some link to poll        
-    }
-
-
-    const handleClick = () => {
-        router.push('/exp/123');
-
-        // router.push({
-        //   pathname: '/exp',
-        //   query: {id: 123},
-        // });
-    }
+      // router.push({
+      //   pathname: '/exp',
+      //   query: {id: 123},
+      // });
+  }
 
   return (
     <div>
-        <h1>Welcome to the Admin page!</h1>
-        <div id="poll">
-            <button onClick={handlePoll}>create poll link</button>
-            <div>
-              {link ? <a href={link}>link</a> : <a>no link</a>}
-            </div>
-        </div>
-        <div>
+      <h1>Welcome to the Admin page!</h1>
+      <div id="poll">
+        <PollForm onPollSubmit={setPollData} />
+        {/* <button onClick={createPoll}> create a poll </button> */}
+        {/* <button onClick={handlePoll}>create poll link</button> */}
+        <div>{link ? <a href={link}>link</a> : <a>no link</a>}</div>
+      </div>
+
+
+      {/* <div>
             <button onClick={handleClick}>click kar</button>
-        </div>
+        </div> */}
     </div>
   );
 };

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-function Question({question, options, onVote}){
+function Question({pollData, onVote}){
+    const question = pollData.question;
+    const options = pollData.options;
+    // const [question, option] = pollData;
     const [selectedOption, setSelectedOption] = useState(null);
 
     const handleOptionChange = (event) => {
@@ -17,7 +20,7 @@ function Question({question, options, onVote}){
     };
 
     return(
-        <div>
+        <div style={{border: "2px solid black"}}>
             <h2>{question}</h2>
             {options.map((option, index) => (
                 <div key={index}>

@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push('/admin'); // later i'll apply authentication and admin/admin_id/ 
+    router.push('/admin'); // later i'll apply authentication and admin/admin_id/
   }
 
   return (

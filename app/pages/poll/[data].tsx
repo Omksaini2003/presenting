@@ -15,8 +15,8 @@ function Poll() {
     const {data} = router.query;
 
     const defData = {
-        'question': 'Question?',
-        'options': ['A', 'B', 'C', 'D'],
+        question: 'Question?',
+        options: ['A', 'B', 'C', 'D'],
     };
 
     const [pollData, setPollData] = useState(defData);
@@ -61,8 +61,7 @@ function Poll() {
         <div>
             <h1>Vote here</h1>
             <Question
-                question={pollData.question}
-                options={pollData.options}
+                pollData={pollData}
                 onVote={handleVote}
             />
             <Dashboard votes={votes} />
