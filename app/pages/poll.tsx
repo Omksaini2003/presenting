@@ -15,7 +15,11 @@ function Poll() {
     };
 
     const [pollData, setPollData] = useState(defData);
-    const [votes, setVotes] = useState({});
+    const [votes, setVotes] = useState({
+        'Red':0,
+        'Green':0,
+        'Blue':0
+    });
 
     useEffect(() => {
         console.log(router);
@@ -39,6 +43,7 @@ function Poll() {
             }
         }
     }, [router.isReady, router.query.slug]);
+
 
     // handleVote will be done at server side later
     const handleVote = (selectedOption) => {
